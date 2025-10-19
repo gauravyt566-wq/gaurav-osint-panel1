@@ -1,160 +1,269 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gaurav Verification Dashboard - Pro</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gaurav Verification Dashboard - Pro (with Login)</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-body { 
-    font-family: 'Inter', sans-serif; 
-    background: #F8FAFC; 
-}
-.tab-button.active { 
-    color: #1D4ED8; 
-    border-bottom: 3px solid #1D4ED8; 
-    background: #F0F4FF; 
-    font-weight: 700;
-}
-.tab-button {
-    transition: all 0.2s ease-in-out; 
-    border-bottom: 3px solid transparent;
-}
-.tab-button:hover:not(.active) {
-    background: #F0F4FF;
-}
-.data-card { 
-    border-left: 4px solid #059669; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
-}
-.error-card { 
-    border-left: 4px solid #DC2626; 
-}
-.loader { 
-    border-top-color: #1D4ED8; 
-}
-.result-value {
-    word-wrap: break-word; 
-    overflow-wrap: break-word; 
-    min-width: 0; 
-    text-align: right;
-    font-size: 0.825rem; 
-}
-.result-key {
-    font-size: 0.825rem;
-    color: #4B5563; 
-    font-weight: 500;
-}
+body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg,#6d5df6 0%, #6a3fb0 100%); }
+.tab-button.active { color: #1D4ED8; border-bottom: 3px solid #1D4ED8; background: #F0F4FF; font-weight: 700;}
+.tab-button { transition: all 0.2s ease-in-out; border-bottom: 3px solid transparent; }
+.tab-button:hover:not(.active) { background: #F0F4FF; }
+.data-card { border-left: 4px solid #059669; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.error-card { border-left: 4px solid #DC2626; }
+.loader { border-top-color: #1D4ED8; }
+.result-value { word-wrap: break-word; overflow-wrap: break-word; min-width: 0; text-align: right; font-size: 0.825rem; }
+.result-key { font-size: 0.825rem; color: #4B5563; font-weight: 500; }
+.card-white { background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
 </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-<div class="max-w-4xl mx-auto p-4 md:p-6">
-    <header class="mb-6 md:mb-8 p-4 bg-white rounded-xl shadow-lg border-t-4 border-blue-600 sticky top-0 z-10">
-        <h1 class="text-2xl font-extrabold text-gray-900 flex justify-center items-center">
-            <span data-lucide="shield-check" class="w-6 h-6 mr-2 text-blue-600"></span>
-            GAURAV OSINT TOOL
-        </h1>
-        <p class="text-gray-500 text-sm mt-1 text-center">Fast & Secure Lookup Platform</p>
+<div class="w-full max-w-4xl">
+  <div class="card-white p-6">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-extrabold text-gray-900 flex items-center justify-center">
+        <span data-lucide="shield-check" class="w-6 h-6 mr-2 text-blue-600"></span>
+        GAURAV OSINT TOOL
+      </h1>
+      <p class="text-gray-500 text-sm mt-1">Fast & Secure Lookup Platform</p>
     </header>
 
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
-        <nav class="flex justify-between items-center border-b border-gray-200 overflow-x-auto">
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50"
-                onclick="showTab('aadhaar')"><span data-lucide='credit-card' class='w-4 h-4'></span><span class="hidden sm:inline">Aadhaar</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50"
-                onclick="showTab('mobile')"><span data-lucide='phone' class='w-4 h-4'></span><span class="hidden sm:inline">Mobile</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50"
-                onclick="showTab('gst')"><span data-lucide='building-2' class='w-4 h-4'></span><span class="hidden sm:inline">GSTIN</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50"
-                onclick="showTab('telegram')"><span data-lucide='send' class='w-4 h-4'></span><span class="hidden sm:inline">Telegram</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50"
-                onclick="showTab('ifsc')"><span data-lucide='banknote' class='w-4 h-4'></span><span class="hidden sm:inline">IFSC</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50"
-                onclick="showTab('vehicle')"><span data-lucide='truck' class='w-4 h-4'></span><span class="hidden sm:inline">Vehicle</span></button>
-        </nav>
+    <!-- LOGIN AREA -->
+    <div id="login-area" class="max-w-md mx-auto mb-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center justify-center">🔐 Admin Login / Use Passkey</h2>
+
+      <div class="space-y-3">
+        <input id="passkey-input" placeholder="Enter your passkey" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 text-base" />
+        <div class="flex gap-3">
+          <button id="login-btn" class="flex-1 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition">Login →</button>
+          <button id="buykey-btn" class="flex-1 bg-amber-500 text-white p-3 rounded-lg font-semibold hover:bg-amber-600 transition">BUY KEY</button>
+        </div>
+        <p id="login-msg" class="text-sm text-center mt-2 text-gray-600"></p>
+      </div>
     </div>
 
-    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100">
+    <!-- MAIN APP (hidden until validated) -->
+    <div id="app-area" class="hidden">
+      <div class="bg-white rounded-xl overflow-hidden mb-6">
+        <nav class="flex justify-between items-center border-b border-gray-200 overflow-x-auto">
+          <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('aadhaar')"><span data-lucide='credit-card' class='w-4 h-4'></span><span class="hidden sm:inline">Aadhaar</span></button>
+          <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('mobile')"><span data-lucide='phone' class='w-4 h-4'></span><span class="hidden sm:inline">Mobile</span></button>
+          <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('gst')"><span data-lucide='building-2' class='w-4 h-4'></span><span class="hidden sm:inline">GSTIN</span></button>
+          <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('telegram')"><span data-lucide='send' class='w-4 h-4'></span><span class="hidden sm:inline">Telegram</span></button>
+          <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('ifsc')"><span data-lucide='banknote' class='w-4 h-4'></span><span class="hidden sm:inline">IFSC</span></button>
+          <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('vehicle')"><span data-lucide='truck' class='w-4 h-4'></span><span class="hidden sm:inline">Vehicle</span></button>
+        </nav>
+      </div>
 
+      <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100">
         <!-- Aadhaar Tab -->
         <div id="aadhaar" class="tab-pane">
-            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">Aadhaar Verification</h2>
-            <div class="flex flex-col md:flex-row gap-3">
-                <input type="number" id="aadhaar-input" placeholder="Enter 12-digit Aadhaar Number"
-                    class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base">
-                <button onclick="lookup('aadhaar')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36">
-                    <span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
-            </div>
-            <div id="aadhaar-result" class="mt-6"></div>
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">Aadhaar Verification</h2>
+          <div class="flex flex-col md:flex-row gap-3">
+            <input type="number" id="aadhaar-input" placeholder="Enter 12-digit Aadhaar Number" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base">
+            <button onclick="lookup('aadhaar')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36"><span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
+          </div>
+          <div id="aadhaar-result" class="mt-6"></div>
         </div>
 
         <!-- Mobile Tab -->
         <div id="mobile" class="tab-pane hidden">
-            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">Mobile Lookup</h2>
-            <div class="flex flex-col md:flex-row gap-3">
-                <input type="number" id="mobile-input" placeholder="Enter 10-digit Mobile Number"
-                    class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base">
-                <button onclick="lookup('mobile')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36">
-                    <span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
-            </div>
-            <div id="mobile-result" class="mt-6"></div>
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">Mobile Lookup</h2>
+          <div class="flex flex-col md:flex-row gap-3">
+            <input type="number" id="mobile-input" placeholder="Enter 10-digit Mobile Number" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base">
+            <button onclick="lookup('mobile')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36"><span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
+          </div>
+          <div id="mobile-result" class="mt-6"></div>
         </div>
-        
+
         <!-- GST Tab -->
         <div id="gst" class="tab-pane hidden">
-            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">GSTIN Lookup</h2>
-            <div class="flex flex-col md:flex-row gap-3">
-                <input type="text" id="gst-input" placeholder="Enter GSTIN"
-                    class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base uppercase">
-                <button onclick="lookup('gst')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36">
-                    <span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
-            </div>
-            <div id="gst-result" class="mt-6"></div>
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">GSTIN Lookup</h2>
+          <div class="flex flex-col md:flex-row gap-3">
+            <input type="text" id="gst-input" placeholder="Enter GSTIN" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base uppercase">
+            <button onclick="lookup('gst')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36"><span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
+          </div>
+          <div id="gst-result" class="mt-6"></div>
         </div>
 
         <!-- Telegram Tab -->
         <div id="telegram" class="tab-pane hidden">
-            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">Telegram Info</h2>
-            <div class="flex flex-col md:flex-row gap-3">
-                <input type="text" id="telegram-input" placeholder="Enter Telegram Username (without @)"
-                    class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base">
-                <button onclick="lookup('telegram')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36">
-                    <span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
-            </div>
-            <div id="telegram-result" class="mt-6"></div>
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">Telegram Info</h2>
+          <div class="flex flex-col md:flex-row gap-3">
+            <input type="text" id="telegram-input" placeholder="Enter Telegram Username (without @)" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base">
+            <button onclick="lookup('telegram')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36"><span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
+          </div>
+          <div id="telegram-result" class="mt-6"></div>
         </div>
-        
+
         <!-- IFSC Tab -->
         <div id="ifsc" class="tab-pane hidden">
-            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">IFSC Lookup</h2>
-            <div class="flex flex-col md:flex-row gap-3">
-                <input type="text" id="ifsc-input" placeholder="Enter IFSC Code"
-                    class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base uppercase">
-                <button onclick="lookup('ifsc')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36">
-                    <span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
-            </div>
-            <div id="ifsc-result" class="mt-6"></div>
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">IFSC Lookup</h2>
+          <div class="flex flex-col md:flex-row gap-3">
+            <input type="text" id="ifsc-input" placeholder="Enter IFSC Code" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base uppercase">
+            <button onclick="lookup('ifsc')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36"><span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
+          </div>
+          <div id="ifsc-result" class="mt-6"></div>
         </div>
 
         <!-- Vehicle Tab -->
         <div id="vehicle" class="tab-pane hidden">
-            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">Vehicle RC Lookup</h2>
-            <div class="flex flex-col md:flex-row gap-3">
-                <input type="text" id="vehicle-input" placeholder="Enter Vehicle RC"
-                    class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base uppercase">
-                <button onclick="lookup('vehicle')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36">
-                    <span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
-            </div>
-            <div id="vehicle-result" class="mt-6"></div>
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">Vehicle RC Lookup</h2>
+          <div class="flex flex-col md:flex-row gap-3">
+            <input type="text" id="vehicle-input" placeholder="Enter Vehicle RC" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600 transition shadow-sm text-base uppercase">
+            <button onclick="lookup('vehicle')" class="flex items-center justify-center bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md md:w-36"><span data-lucide='search' class='w-4 h-4 mr-2'></span>Lookup</button>
+          </div>
+          <div id="vehicle-result" class="mt-6"></div>
         </div>
 
+      </div>
+
+      <div class="mt-4 text-right">
+        <a href="admin.html" class="text-sm text-blue-600 hover:underline">Go to Admin Panel</a>
+        <button id="logout-btn" class="ml-4 text-sm text-red-600">Logout</button>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- BUY KEY MODAL -->
+<div id="buy-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center p-4">
+  <div class="bg-white rounded-lg p-6 max-w-lg w-full">
+    <h3 class="text-lg font-semibold mb-3">Buy Key</h3>
+    <p class="text-sm text-gray-600 mb-4">This is a demo purchase modal. In production connect to a payment gateway. For demo, you can auto-generate a trial key (7 days, 1 user)</p>
+    <div class="flex gap-3">
+      <button id="buy-trial" class="flex-1 bg-green-600 text-white p-2 rounded">Generate Trial Key (7 days)</button>
+      <button id="buy-custom" class="flex-1 bg-blue-600 text-white p-2 rounded">Generate Custom (demo)</button>
+    </div>
+    <div class="mt-3 text-right">
+      <button id="buy-close" class="text-sm text-gray-600">Close</button>
+    </div>
+    <div id="buy-output" class="mt-3"></div>
+  </div>
 </div>
 
 <script>
+/* ------------- Simple key-storage / validation logic (localStorage) -------------- */
+/*
+Key object shape:
+{ key: "XXXX-XXXX", days: 7, maxUsers: 1, createdAt: 171234234234, uses: 0, revoked: false }
+Stored in localStorage under "gaurav_keys" as JSON array.
+*/
+
+function loadKeys(){ try { return JSON.parse(localStorage.getItem('gaurav_keys')||'[]'); } catch(e){ return []; } }
+function saveKeys(arr){ localStorage.setItem('gaurav_keys', JSON.stringify(arr)); }
+function generateKeyString(){ const a=Array.from(crypto.getRandomValues(new Uint8Array(8))).map(n=>n.toString(36)).join('').toUpperCase(); return a.slice(0,4)+'-'+a.slice(4,8); }
+
+function findKey(k){ const keys = loadKeys(); return keys.find(x=>x.key===k && !x.revoked); }
+function isKeyValid(obj){
+  if(!obj) return {ok:false, msg:'Key not found.'};
+  const now = Date.now();
+  const expiry = obj.createdAt + (obj.days*24*60*60*1000);
+  if(now > expiry) return {ok:false, msg:'Key expired.'};
+  if(typeof obj.maxUsers==='number' && obj.uses >= obj.maxUsers) return {ok:false, msg:'Usage limit reached.'};
+  return {ok:true};
+}
+
+function consumeKey(obj){
+  const keys = loadKeys();
+  const k = keys.find(x=>x.key===obj.key);
+  if(!k) return;
+  k.uses = (k.uses||0)+1;
+  saveKeys(keys);
+}
+
+/* ------------------ Page behaviour ------------------ */
+document.addEventListener('DOMContentLoaded', ()=> {
+  lucide.createIcons();
+  // default: create a sample key if none exist (for demo)
+  if(loadKeys().length===0){
+    const sample = { key:'DEMO-KEY1', days:7, maxUsers:10, createdAt: Date.now(), uses:0, revoked:false };
+    saveKeys([sample]);
+  }
+
+  // show tab helper
+  window.showTab = function(tabId){
+    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.add('hidden'));
+    document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
+    const pane = document.getElementById(tabId);
+    if(pane) pane.classList.remove('hidden');
+    const btn=document.querySelector(`.tab-button[onclick*="${tabId}"]`);
+    if(btn) btn.classList.add('active');
+    lucide.createIcons();
+  };
+
+  // login actions
+  const loginBtn = document.getElementById('login-btn');
+  const buyBtn = document.getElementById('buykey-btn');
+  const passInput = document.getElementById('passkey-input');
+  const msg = document.getElementById('login-msg');
+  const appArea = document.getElementById('app-area');
+  const loginArea = document.getElementById('login-area');
+
+  loginBtn.addEventListener('click', ()=>{
+    const val = (passInput.value||'').trim().toUpperCase();
+    if(!val){ msg.textContent='Please enter a passkey.'; return; }
+    const obj = findKey(val);
+    const valid = isKeyValid(obj);
+    if(!valid.ok){ msg.textContent = valid.msg; return; }
+    // consume use and show app
+    consumeKey(obj);
+    msg.textContent = 'Key accepted — welcome!';
+    loginArea.classList.add('hidden');
+    appArea.classList.remove('hidden');
+    showTab('aadhaar');
+  });
+
+  buyBtn.addEventListener('click', ()=> {
+    document.getElementById('buy-modal').classList.remove('hidden');
+  });
+
+  document.getElementById('buy-close').addEventListener('click', ()=> {
+    document.getElementById('buy-modal').classList.add('hidden');
+  });
+
+  document.getElementById('buy-trial').addEventListener('click', ()=> {
+    const keys = loadKeys();
+    const k = generateKeyString();
+    const obj = { key:k, days:7, maxUsers:1, createdAt: Date.now(), uses:0, revoked:false };
+    keys.push(obj); saveKeys(keys);
+    document.getElementById('buy-output').innerHTML = `<div class="p-3 bg-green-50 rounded text-sm">Trial Key: <strong>${k}</strong> (7 days, 1 user)</div>`;
+  });
+
+  document.getElementById('buy-custom').addEventListener('click', ()=> {
+    // simple custom generation UI
+    const html = `<div class="space-y-2">
+      <input id="c-days" type="number" min="1" value="30" class="w-full p-2 border rounded" placeholder="Days">
+      <input id="c-users" type="number" min="1" value="5" class="w-full p-2 border rounded" placeholder="Max users">
+      <div class="flex gap-2">
+        <button id="c-gen" class="flex-1 bg-blue-600 text-white p-2 rounded">Generate</button>
+        <button id="c-cancel" class="flex-1 bg-gray-200 p-2 rounded">Cancel</button>
+      </div>
+    </div>`;
+    document.getElementById('buy-output').innerHTML = html;
+    document.getElementById('c-cancel').onclick = ()=>{ document.getElementById('buy-output').innerHTML = ''; };
+    document.getElementById('c-gen').onclick = ()=>{
+      const days = Math.max(1, parseInt(document.getElementById('c-days').value||30));
+      const users = Math.max(1, parseInt(document.getElementById('c-users').value||1));
+      const keys = loadKeys();
+      const k = generateKeyString();
+      const obj = { key:k, days:days, maxUsers:users, createdAt: Date.now(), uses:0, revoked:false };
+      keys.push(obj); saveKeys(keys);
+      document.getElementById('buy-output').innerHTML = `<div class="p-3 bg-green-50 rounded text-sm">Key created: <strong>${k}</strong> (${days} days, ${users} max users)</div>`;
+    };
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', ()=>{
+    appArea.classList.add('hidden'); loginArea.classList.remove('hidden'); document.getElementById('passkey-input').value='';
+    document.getElementById('login-msg').textContent = 'Logged out.';
+  });
+});
+
+/* -------------- Dummy lookup function re-using your previous API_MAP logic -------------- */
 const API_MAP = {
   aadhaar: { url: 'https://test.sahilraz9265.workers.dev/ahhdhar?id=', inputId: 'aadhaar-input', resultId: 'aadhaar-result', minLength: 12, maxLength: 12, errorMsg: 'Aadhaar must be 12 digits.' },
   mobile: { url: 'https://gauravapi.gauravyt492.workers.dev/?mobile=', inputId: 'mobile-input', resultId: 'mobile-result', minLength: 10, maxLength: 10, errorMsg: 'Mobile must be 10 digits.' },
@@ -164,50 +273,33 @@ const API_MAP = {
   vehicle: { url: 'https://gaurav-vehicle-api.gauravyt492.workers.dev/?rc=', inputId: 'vehicle-input', resultId: 'vehicle-result', minLength: 4, maxLength: 15, errorMsg: 'Invalid RC format.' },
 };
 
-function showTab(tabId){
- document.querySelectorAll('.tab-pane').forEach(p=>p.classList.add('hidden'));
- document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
- document.getElementById(tabId).classList.remove('hidden');
- const btn=document.querySelector(`.tab-button[onclick*="${tabId}"]`);
- btn.classList.add('active'); 
- lucide.createIcons();
-}
-
 function jsonToHtml(obj){
- let html='';
- for(const [k,v] of Object.entries(obj)){
-  if(v && typeof v==='object'){ 
-    html+=`<div class='ml-3 mt-2 border-l-2 border-gray-100 pl-3'>
-    <p class='text-gray-700 font-semibold mb-1 text-xs uppercase tracking-wider'>${k}</p>
-    ${jsonToHtml(v)}
-    </div>`; 
-    continue;
+  let html='';
+  for(const [k,v] of Object.entries(obj)){
+    if(v && typeof v==='object'){
+      html+=`<div class='ml-3 mt-2 border-l-2 border-gray-100 pl-3'><p class='text-gray-700 font-semibold mb-1 text-xs uppercase tracking-wider'>${k}</p>${jsonToHtml(v)}</div>`;
+      continue;
+    }
+    html+=`<div class='flex justify-between items-start py-1 border-b border-gray-50'><span class='result-key pr-2'>${k}</span><span class='font-semibold text-gray-800 result-value'>${v || 'N/A'}</span></div>`;
   }
-  html+=`<div class='flex justify-between items-start py-1 border-b border-gray-50'>
-    <span class='result-key pr-2'>${k}</span>
-    <span class='font-semibold text-gray-800 result-value'>${v || 'N/A'}</span>
-    </div>`;
- }
- return html||'<p class="text-gray-500 text-center py-3 text-sm">No details found.</p>';
+  return html||'<p class="text-gray-500 text-center py-3 text-sm">No details found.</p>';
 }
 
 function getLoading(){
-    return `<div class='flex flex-col justify-center items-center p-8 bg-blue-50 rounded-lg'>
-        <div class='loader border-t-4 border-b-4 border-blue-600 rounded-full w-8 h-8 animate-spin'></div>
-        <p class='mt-3 text-blue-700 font-medium text-sm'>Processing...</p>
-    </div>`;
+  return `<div class='flex flex-col justify-center items-center p-8 bg-blue-50 rounded-lg'>
+    <div class='loader border-t-4 border-b-4 border-blue-600 rounded-full w-8 h-8 animate-spin'></div>
+    <p class='mt-3 text-blue-700 font-medium text-sm'>Processing...</p>
+  </div>`;
 }
 
 async function lookup(type) {
   const c = API_MAP[type];
-  const q = document.getElementById(c.inputId).value.trim().toUpperCase(); 
+  const q = document.getElementById(c.inputId).value.trim().toUpperCase();
   const r = document.getElementById(c.resultId);
-  document.getElementById(c.inputId).value = q; 
+  document.getElementById(c.inputId).value = q;
 
   if (q.length < c.minLength || q.length > c.maxLength) {
-    r.innerHTML = `<div class='error-card bg-red-50 p-4 rounded-lg shadow-inner'>
-      <p class='text-red-700 font-semibold flex items-center text-sm'><span data-lucide='alert-triangle' class='w-4 h-4 mr-2'></span>Input Error: ${c.errorMsg}</p>
-      </div>`;
+    r.innerHTML = `<div class='error-card bg-red-50 p-4 rounded-lg shadow-inner'><p class='text-red-700 font-semibold flex items-center text-sm'><span data-lucide='alert-triangle' class='w-4 h-4 mr-2'></span>Input Error: ${c.errorMsg}</p></div>`;
     lucide.createIcons();
     return;
   }
@@ -218,16 +310,8 @@ async function lookup(type) {
     const res = await fetch(c.url + encodeURIComponent(q));
     const text = await res.text();
     let data;
-    try { data = JSON.parse(text); } 
-    catch { 
-      r.innerHTML = `<div class='error-card bg-red-50 p-4 rounded-lg shadow-inner'>
-      <p class='text-red-700 font-semibold text-sm flex items-center'><span data-lucide='x-circle' class='w-4 h-4 mr-2'></span>Error: Invalid API Response</p>
-      </div>`;
-      lucide.createIcons();
-      return;
-    }
+    try { data = JSON.parse(text); } catch { data = { info: text || 'raw response' }; }
 
-    // Determine result data based on type
     let resultData = null;
     if (type === 'aadhaar' && data.aadhaar) resultData = data.aadhaar;
     else if (data.data) resultData = data.data;
@@ -239,28 +323,21 @@ async function lookup(type) {
     else if (Object.keys(data).length > 0) resultData = data;
 
     if (!resultData || Object.keys(resultData).length === 0 || data.Success === false || data.status === 'error') {
-        const message = data.Message || data.error || 'Verification failed. Details not found.';
-        r.innerHTML = `<div class='error-card bg-yellow-50 p-4 rounded-lg shadow-inner'>
-        <p class='text-yellow-700 font-semibold text-sm flex items-center'>
-        <span data-lucide='info' class='w-4 h-4 mr-2'></span>${message}</p></div>`;
-        lucide.createIcons();
+      const message = data.Message || data.error || 'Verification failed. Details not found.';
+      r.innerHTML = `<div class='error-card bg-yellow-50 p-4 rounded-lg shadow-inner'><p class='text-yellow-700 font-semibold text-sm flex items-center'><span data-lucide='info' class='w-4 h-4 mr-2'></span>${message}</p></div>`;
+      lucide.createIcons();
       return;
     }
 
-    r.innerHTML = `<div class='data-card bg-white p-5 rounded-xl shadow-md border-t-2 border-green-200'>
-    <p class='text-green-700 font-bold mb-3 pb-1 border-b border-green-100 text-sm flex items-center'>
-    <span data-lucide='check-circle' class='w-4 h-4 mr-2'></span>Verification Successful</p>
-    ${jsonToHtml(resultData)}</div>`;
+    r.innerHTML = `<div class='data-card bg-white p-5 rounded-xl shadow-md border-t-2 border-green-200'><p class='text-green-700 font-bold mb-3 pb-1 border-b border-green-100 text-sm flex items-center'><span data-lucide='check-circle' class='w-4 h-4 mr-2'></span>Verification Successful</p>${jsonToHtml(resultData)}</div>`;
     lucide.createIcons();
   } catch (e) {
-    r.innerHTML = `<div class='error-card bg-red-50 p-4 rounded-lg shadow-inner'>
-        <p class='text-red-700 font-semibold text-sm flex items-center'><span data-lucide='cloud-off' class='w-4 h-4 mr-2'></span>Network Error. Please retry.</p>
-    </div>`;
+    r.innerHTML = `<div class='error-card bg-red-50 p-4 rounded-lg shadow-inner'><p class='text-red-700 font-semibold text-sm flex items-center'><span data-lucide='cloud-off' class='w-4 h-4 mr-2'></span>Network Error. Please retry.</p></div>`;
     lucide.createIcons();
   }
 }
 
-window.onload=()=>{showTab('aadhaar');lucide.createIcons();}
+window.onload = ()=>{ lucide.createIcons(); };
 </script>
 </body>
 </html>
