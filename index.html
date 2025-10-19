@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GAURAV OSINT PANEL</title>
+<style>
+  :root{
+    --bg:#071026; --card:#071628; --teal1:#06d6ff; --teal2:#00a8ff;
+    --muted:#9fb0c8; --glass:rgba(255,255,255,0.05); --accent:linear-gradient(90deg,var(--teal1),var(--teal2));
+    --text:#e6f4ff;
+  }
+  body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);
+    display:flex;align-items:center;justify-content:center;padding:24px;font-family:Inter,sans-serif;}
+  body.light{--bg:#f5f7fa;--card:#fff;--text:#222;--muted:#555;--glass:rgba(0,0,0,0.05);}
+  body.green{--bg:#052814;--card:#0b3d24;--teal1:#00ff95;--teal2:#00d66c;--text:#e6fff4;}
+  body.purple{--bg:#1d0c33;--card:#2a144a;--teal1:#c770ff;--teal2:#9c27ff;--text:#f6e6ff;}
+  .panel{width:100%;max-width:850px;border-radius:18px;padding:28px;background:var(--card);
+    box-shadow:0 10px 40px rgba(0,0,0,0.3);}
+  h1{margin:0 0 6px;font-size:28px;color:var(--teal1);}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .controls{display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+  select,input{background:transparent;color:inherit;border:1px solid var(--glass);padding:12px 14px;
+    border-radius:12px;outline:none;flex:1;}
+  .btn{padding:12px 16px;border-radius:12px;background:var(--accent);border:none;color:#022;
+    font-weight:700;cursor:pointer;}
+  .muted-btn{background:var(--glass);border:none;color:var(--muted);padding:10px 12px;
+    border-radius:10px;cursor:pointer;}
+  .row{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .chip{background:var(--glass);padding:6px 10px;border-radius:999px;font-size:12px}
+  .result{margin-top:14px;padding:16px;border-radius:12px;background:var(--glass);
+    min-height:160px;font-size:14px;max-height:400px;overflow:auto;white-space:pre-wrap;}
+  .card-field{padding:6px 10px;margin:4px 0;border-radius:6px;background:rgba(255,255,255,0.05);}
+  .key{font-weight:bold;color:var(--teal1);}
+  .nested{margin-left:14px;border-left:2px solid var(--glass);padding-left:10px;}
+  .history{margin-top:14px;}
+  .history button{margin:4px 6px 0 0;border:none;background:var(--glass);padding:6px 10px;
+    border-radius:8px;cursor:pointer;color:var(--muted);}
+  .footer{margin-top:12px;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="panel">
+  <h1>🔍 GAURAV OSINT</h1>
+  <div class="sub">Number | Vehicle | IFSC | IP | Aadhar | GST | Telegram</div>
+
+  <div class="controls">
+    <select id="apiSelect">
+      <option>Number Info</option>
+      <option>Vehicle (RC)</option>
+      <option>IFSC</option>
+      <option>IP Info</option>
+      <option>Aadhar Info</option>
+      <option>UPI Info</option>
+      <option>GST Lookup</option>
+      <option>Telegram User</option>
+    </select>
+    <input id="q" type="text" placeholder="Enter query..." />
+  </div>
+
+  <!-- Fetch Info button नीचे ले आया -->
+  <div style="margin-bottom:14px;">
+    <button id="fetchBtn" class="btn" style="width:100%;">🚀 Fetch Info</button>
+  </div>
+
+  <div class="row">
+    <button id="copyBtn" class="muted-btn">📋 Copy</button>
+    <button id="downloadBtn" class="muted-btn">💾 TXT</button>
+    <button id="toggleBtn" class="muted-btn">🔄 Toggle View</button>
+    <button id="shareBtn" class="muted-btn">📤 Share</button>
+    <button id="clearBtn" class="muted-btn">🗑 Clear</button>
+    <select id="themeSel" class="muted-btn">
+      <option value="dark">🌙 Dark</option>
+      <option value="light">☀ Light</option>
+      <option value="green">💚 Green</option>
+      <option value="purple">💜 Purple</option>
+    </select>
+  </div>
+
+  <div id="result" class="result"><div>💬 Waiting for input...</div></div>
+  <div class="chip" id="summary"></div>
+  <div class="footer" id="footerInfo">Ready.</div>
+
+  <div class="history" id="history"><b>History:</b></div>
+</div>
+
+<script>
+const API_MAP={
+ "Number Info":q=>`https://gauravapi.gauravyt492.workers.dev/?mobile=${encodeURIComponent(q)}`,
+ "Vehicle (RC)":q=>`https://gaurav-vehicle-api.gauravyt492.workers.dev/?rc=${encodeURIComponent(q)}`,
+ "IFSC":q=>`https://ifsc-info.gauravyt492.workers.dev/?ifsc=${encodeURIComponent(q)}`,
+ "IP Info":q=>`https://karmali.serv00.net/ip_api.php?ip=${encodeURIComponent(q)}`,
+ "Aadhar Info":q=>`https://aadhar.gauravyt492.workers.dev/?aadhar=${encodeURIComponent(q)}`,
+ "UPI Info":q=>`https://gauravapi.gauravyt492.workers.dev/?mobile=${encodeURIComponent(q)}`,
+ "GST Lookup":q=>`https://gstlookup.hideme.eu.org/?gstNumber=${encodeURIComponent(q)}`,
+ "Telegram User":q=>`https://tg-info-neon.vercel.app/user-details?user=${encodeURIComponent(q)}`
+};
+const resultEl=document.getElementById('result');
+const historyEl=document.getElementById('history');
+const summaryEl=document.getElementById('summary');
+const footerEl=document.getElementById('footerInfo');
+let historyList=[]; let lastJSON=null; let cardView=true;
+
+function renderObject(obj,container){
+  for(const k in obj){
+    const val=obj[k];
+    const div=document.createElement('div');div.className="card-field";
+    if(typeof val==="object"&&val!==null){
+      div.innerHTML=`<span class="key">${k}:</span>`;
+      const nested=document.createElement('div');nested.className="nested";
+      renderObject(val,nested);div.appendChild(nested);
+    }else{ div.innerHTML=`<span class="key">${k}:</span> ${val}`; }
+    container.appendChild(div);
+  }
+}
+function showCard(json){
+  resultEl.innerHTML="";
+  if(Array.isArray(json)){json.forEach((it,i)=>{const sec=document.createElement("div");sec.className="nested";sec.innerHTML=`<div class="key">[${i}]</div>`;renderObject(it,sec);resultEl.appendChild(sec);});}
+  else renderObject(json,resultEl);
+}
+function show(msg,isError=false){ resultEl.innerHTML=`<pre style="color:${isError?'#ff6060':'inherit'}">${msg}</pre>`; }
+
+async function fetchInfo(){
+  const api=document.getElementById('apiSelect').value;
+  const q=document.getElementById('q').value.trim();
+  if(!q){show("❌ Please enter a query");return;}
+  show("⏳ Fetching...");
+  const t0=performance.now();
+  try{
+    const res=await fetch(API_MAP[api](q));
+    const text=await res.text(); const t1=performance.now();
+    footerEl.innerText=`⏱ Response time: ${(t1-t0).toFixed(1)} ms`;
+    try{ const j=JSON.parse(text); lastJSON=j; cardView=true; showCard(j); showSummary(j); }
+    catch{ show(text); summaryEl.innerText=""; }
+    addHistory(api,q);
+  }catch(err){ show("❌ Error: "+err.message,true); footerEl.innerText="❌ Fetch failed."; }
+}
+function showSummary(j){
+  let keys=Object.keys(j).length, objs=0, arrs=0;
+  JSON.stringify(j,(k,v)=>{if(Array.isArray(v))arrs++;else if(typeof v==="object"&&v)objs++;return v;});
+  summaryEl.innerText=`📊 Keys: ${keys}, Objects: ${objs}, Arrays: ${arrs}`;
+}
+function addHistory(api,q){ historyList.push({api,q}); renderHistory(); }
+function renderHistory(){ historyEl.innerHTML="<b>History:</b> "; historyList.forEach(h=>{const b=document.createElement("button");b.textContent=`${h.api}:${h.q}`;b.onclick=()=>{document.getElementById('apiSelect').value=h.api;document.getElementById('q').value=h.q;fetchInfo();};historyEl.appendChild(b);}); }
+
+document.getElementById('copyBtn').onclick=()=>navigator.clipboard.writeText(resultEl.innerText);
+document.getElementById('downloadBtn').onclick=()=>{if(!resultEl.innerText)return;const blob=new Blob([resultEl.innerText],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="result.txt";a.click();};
+document.getElementById('toggleBtn').onclick=()=>{if(!lastJSON)return;if(cardView){resultEl.innerText=JSON.stringify(lastJSON,null,2);cardView=false;}else{showCard(lastJSON);cardView=true;}};
+document.getElementById('clearBtn').onclick=()=>{resultEl.innerHTML="💬 Waiting for input...";lastJSON=null;summaryEl.innerText="";};
+document.getElementById('shareBtn').onclick=()=>{if(!resultEl.innerText)return;let txt=encodeURIComponent(resultEl.innerText.slice(0,1000));window.open(`https://wa.me/?text=${txt}`,"_blank");};
+document.getElementById('themeSel').onchange=(e)=>{document.body.className=e.target.value;};
+document.getElementById('fetchBtn').onclick=fetchInfo;
+document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')fetchInfo();});
+</script>
+</body>
+</html>
