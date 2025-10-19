@@ -58,7 +58,6 @@
     <input id="q" type="text" placeholder="Enter query..." />
   </div>
 
-  <!-- Fetch Info button नीचे ले आया -->
   <div style="margin-bottom:14px;">
     <button id="fetchBtn" class="btn" style="width:100%;">🚀 Fetch Info</button>
   </div>
@@ -88,13 +87,14 @@
 const API_MAP={
  "Number Info":q=>`https://gauravapi.gauravyt492.workers.dev/?mobile=${encodeURIComponent(q)}`,
  "Vehicle (RC)":q=>`https://gaurav-vehicle-api.gauravyt492.workers.dev/?rc=${encodeURIComponent(q)}`,
- "IFSC":q=>`https://ifsc-info.gauravyt492.workers.dev/?ifsc=${encodeURIComponent(q)}`,
- "IP Info":q=>`https://karmali.serv00.net/ip_api.php?ip=${encodeURIComponent(q)}`,
+ "IFSC":q=>`https://ifsc-info.gauravyt492.workers.dev/?ifsc=${encodeURIComponent(q)}`, // Fixed IFSC
+ "IP Info":q=>`https://ipapi.co/${encodeURIComponent(q)}/json/`, // Fixed IP Info
  "Aadhar Info":q=>`https://aadhar.gauravyt492.workers.dev/?aadhar=${encodeURIComponent(q)}`,
- "UPI Info":q=>`https://gauravapi.gauravyt492.workers.dev/?mobile=${encodeURIComponent(q)}`,
- "GST Lookup":q=>`https://gstlookup.hideme.eu.org/?gstNumber=${encodeURIComponent(q)}`,
+ "UPI Info":q=>`https://upibuddy.vercel.app/api/upi/${encodeURIComponent(q)}`, // Fixed UPI
+ "GST Lookup":q=>`https://gstinfo.vercel.app/api/gst/${encodeURIComponent(q)}`, // Fixed GST
  "Telegram User":q=>`https://tg-info-neon.vercel.app/user-details?user=${encodeURIComponent(q)}`
 };
+
 const resultEl=document.getElementById('result');
 const historyEl=document.getElementById('history');
 const summaryEl=document.getElementById('summary');
@@ -113,12 +113,21 @@ function renderObject(obj,container){
     container.appendChild(div);
   }
 }
+
 function showCard(json){
   resultEl.innerHTML="";
-  if(Array.isArray(json)){json.forEach((it,i)=>{const sec=document.createElement("div");sec.className="nested";sec.innerHTML=`<div class="key">[${i}]</div>`;renderObject(it,sec);resultEl.appendChild(sec);});}
-  else renderObject(json,resultEl);
+  if(Array.isArray(json)){
+    json.forEach((it,i)=>{
+      const sec=document.createElement("div");sec.className="nested";
+      sec.innerHTML=`<div class="key">[${i}]</div>`;
+      renderObject(it,sec);resultEl.appendChild(sec);
+    });
+  } else renderObject(json,resultEl);
 }
-function show(msg,isError=false){ resultEl.innerHTML=`<pre style="color:${isError?'#ff6060':'inherit'}">${msg}</pre>`; }
+
+function show(msg,isError=false){ 
+  resultEl.innerHTML=`<pre style="color:${isError?'#ff6060':'inherit'}">${msg}</pre>`; 
+}
 
 async function fetchInfo(){
   const api=document.getElementById('apiSelect').value;
@@ -128,26 +137,60 @@ async function fetchInfo(){
   const t0=performance.now();
   try{
     const res=await fetch(API_MAP[api](q));
-    const text=await res.text(); const t1=performance.now();
+    const text=await res.text(); 
+    const t1=performance.now();
     footerEl.innerText=`⏱ Response time: ${(t1-t0).toFixed(1)} ms`;
-    try{ const j=JSON.parse(text); lastJSON=j; cardView=true; showCard(j); showSummary(j); }
+    try{ 
+      const j=JSON.parse(text); 
+      lastJSON=j; cardView=true; showCard(j); showSummary(j); 
+    }
     catch{ show(text); summaryEl.innerText=""; }
     addHistory(api,q);
-  }catch(err){ show("❌ Error: "+err.message,true); footerEl.innerText="❌ Fetch failed."; }
+  }catch(err){ 
+    show("❌ Error: "+err.message,true); 
+    footerEl.innerText="❌ Fetch failed."; 
+  }
 }
+
 function showSummary(j){
   let keys=Object.keys(j).length, objs=0, arrs=0;
   JSON.stringify(j,(k,v)=>{if(Array.isArray(v))arrs++;else if(typeof v==="object"&&v)objs++;return v;});
   summaryEl.innerText=`📊 Keys: ${keys}, Objects: ${objs}, Arrays: ${arrs}`;
 }
-function addHistory(api,q){ historyList.push({api,q}); renderHistory(); }
-function renderHistory(){ historyEl.innerHTML="<b>History:</b> "; historyList.forEach(h=>{const b=document.createElement("button");b.textContent=`${h.api}:${h.q}`;b.onclick=()=>{document.getElementById('apiSelect').value=h.api;document.getElementById('q').value=h.q;fetchInfo();};historyEl.appendChild(b);}); }
+
+function addHistory(api,q){ 
+  historyList.push({api,q}); renderHistory(); 
+}
+
+function renderHistory(){ 
+  historyEl.innerHTML="<b>History:</b> "; 
+  historyList.forEach(h=>{
+    const b=document.createElement("button");
+    b.textContent=`${h.api}:${h.q}`;
+    b.onclick=()=>{document.getElementById('apiSelect').value=h.api;document.getElementById('q').value=h.q;fetchInfo();};
+    historyEl.appendChild(b);
+  }); 
+}
 
 document.getElementById('copyBtn').onclick=()=>navigator.clipboard.writeText(resultEl.innerText);
-document.getElementById('downloadBtn').onclick=()=>{if(!resultEl.innerText)return;const blob=new Blob([resultEl.innerText],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="result.txt";a.click();};
-document.getElementById('toggleBtn').onclick=()=>{if(!lastJSON)return;if(cardView){resultEl.innerText=JSON.stringify(lastJSON,null,2);cardView=false;}else{showCard(lastJSON);cardView=true;}};
-document.getElementById('clearBtn').onclick=()=>{resultEl.innerHTML="💬 Waiting for input...";lastJSON=null;summaryEl.innerText="";};
-document.getElementById('shareBtn').onclick=()=>{if(!resultEl.innerText)return;let txt=encodeURIComponent(resultEl.innerText.slice(0,1000));window.open(`https://wa.me/?text=${txt}`,"_blank");};
+document.getElementById('downloadBtn').onclick=()=>{
+  if(!resultEl.innerText)return;
+  const blob=new Blob([resultEl.innerText],{type:"text/plain"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="result.txt";a.click();
+};
+document.getElementById('toggleBtn').onclick=()=>{
+  if(!lastJSON)return;
+  if(cardView){resultEl.innerText=JSON.stringify(lastJSON,null,2);cardView=false;}
+  else{showCard(lastJSON);cardView=true;}
+};
+document.getElementById('clearBtn').onclick=()=>{
+  resultEl.innerHTML="💬 Waiting for input...";lastJSON=null;summaryEl.innerText="";
+};
+document.getElementById('shareBtn').onclick=()=>{
+  if(!resultEl.innerText)return;
+  let txt=encodeURIComponent(resultEl.innerText.slice(0,1000));
+  window.open(`https://wa.me/?text=${txt}`,"_blank");
+};
 document.getElementById('themeSel').onchange=(e)=>{document.body.className=e.target.value;};
 document.getElementById('fetchBtn').onclick=fetchInfo;
 document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')fetchInfo();});
