@@ -1,219 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gaurav Verification Dashboard - Pro</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
-
-/* General Styles */
-body { font-family: 'Inter', sans-serif; background: #F8FAFC; }
-.tab-button.active { color: #1D4ED8; border-bottom: 3px solid #1D4ED8; background: #F0F4FF; font-weight: 700; }
-.tab-button { transition: all 0.2s ease-in-out; border-bottom: 3px solid transparent; }
-.tab-button:hover:not(.active) { background: #F0F4FF; }
-.data-card { border-left: 4px solid #059669; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-.error-card { border-left: 4px solid #DC2626; }
-.loader { border-top-color: #1D4ED8; }
-.result-value { word-wrap: break-word; overflow-wrap: break-word; min-width: 0; text-align: right; font-size: 0.825rem; }
-.result-key { font-size: 0.825rem; color: #4B5563; font-weight: 500; }
-
-/* Login Styles */
-#login-container {
-    position: fixed;
-    inset: 0;
-    background: #1f293a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 50;
-}
-.login-box {
-    position: relative;
-    width: 360px;
-    background: #1f293a;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-.login-box h2 {
-    font-size: 2em;
-    color: #0ef;
-    text-align: center;
-    margin-bottom: 20px;
-}
-.input-box {
-    position: relative;
-    margin: 20px 0;
-}
-.input-box input {
-    width: 100%;
-    height: 50px;
-    background: transparent;
-    border: 2px solid #2c4766;
-    outline: none;
-    border-radius: 40px;
-    font-size: 1em;
-    color: #fff;
-    padding: 0 20px;
-    transition: 0.5s ease;
-}
-.input-box input:focus,
-.input-box input:valid { border-color: #0ef; }
-.input-box label {
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-    font-size: 1em;
-    color: #fff;
-    pointer-events: none;
-    transition: 0.5s ease;
-}
-.input-box input:focus ~ label,
-.input-box input:valid ~ label {
-    top: 1px;
-    font-size: 0.8em;
-    background: #1f293a;
-    padding: 0 6px;
-    color: #0ef;
-}
-.btn-login {
-    width: 100%;
-    height: 45px;
-    background: #0ef;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 1em;
-    color: #1f293a;
-    font-weight: 600;
-}
-.btn-login:hover { background: #0cc; }
-.login-error { color: #f87171; text-align: center; margin-top: 10px; font-weight: 600; font-size: 0.9em; }
-
-/* Animate spans */
-.container span {
-    position: absolute;
-    left: 0;
-    width: 32px;
-    height: 6px;
-    background: #2c4766;
-    border-radius: 8px;
-    transform-origin: 128px;
-    transform: scale(2.2) rotate(calc(var(--i) * (360deg / 50)));
-    animation: animateBlink 3s linear infinite;
-    animation-delay: calc(var(--i) * (3s / 50));
-}
-@keyframes animateBlink {
-    0% { background: #0ef; }
-    25% { background: #2c4766; }
-}
-</style>
-</head>
-<body>
-
-<!-- Login Overlay -->
-<div id="login-container">
-  <div class="container">
-    <div class="login-box">
-      <h2>Login</h2>
-      <form id="login-form">
-        <div class="input-box">
-          <input type="text" id="username" required>
-          <label>Username</label>
-        </div>
-        <div class="input-box">
-          <input type="password" id="password" required>
-          <label>Password</label>
-        </div>
-        <button type="submit" class="btn-login">Login</button>
-        <div class="login-error" id="login-error"></div>
-      </form>
-    </div>
-    <!-- Animated spans -->
-    <span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span><span style="--i:4"></span>
-    <span style="--i:5"></span><span style="--i:6"></span><span style="--i:7"></span><span style="--i:8"></span><span style="--i:9"></span>
-    <span style="--i:10"></span><span style="--i:11"></span><span style="--i:12"></span><span style="--i:13"></span><span style="--i:14"></span>
-    <span style="--i:15"></span><span style="--i:16"></span><span style="--i:17"></span><span style="--i:18"></span><span style="--i:19"></span>
-    <span style="--i:20"></span><span style="--i:21"></span><span style="--i:22"></span><span style="--i:23"></span><span style="--i:24"></span>
-    <span style="--i:25"></span><span style="--i:26"></span><span style="--i:27"></span><span style="--i:28"></span><span style="--i:29"></span>
-    <span style="--i:30"></span><span style="--i:31"></span><span style="--i:32"></span><span style="--i:33"></span><span style="--i:34"></span>
-    <span style="--i:35"></span><span style="--i:36"></span><span style="--i:37"></span><span style="--i:38"></span><span style="--i:39"></span>
-    <span style="--i:40"></span><span style="--i:41"></span><span style="--i:42"></span><span style="--i:43"></span><span style="--i:44"></span>
-    <span style="--i:45"></span><span style="--i:46"></span><span style="--i:47"></span><span style="--i:48"></span><span style="--i:49"></span>
-  </div>
-</div>
-
-<!-- Dashboard Content -->
-<div id="dashboard" class="hidden min-h-screen">
-<div class="max-w-4xl mx-auto p-4 md:p-6">
-    <header class="mb-6 md:mb-8 p-4 bg-white rounded-xl shadow-lg border-t-4 border-blue-600 sticky top-0 z-10">
-        <h1 class="text-2xl font-extrabold text-gray-900 flex justify-center items-center">
-            <span data-lucide="shield-check" class="w-6 h-6 mr-2 text-blue-600"></span>
-            GAURAV OSINT TOOL
-        </h1>
-        <p class="text-gray-500 text-sm mt-1 text-center">Fast & Secure Lookup Platform</p>
-    </header>
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
-        <nav class="flex justify-between items-center border-b border-gray-200 overflow-x-auto">
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('aadhaar')"><span data-lucide='credit-card' class='w-4 h-4'></span><span class="hidden sm:inline">Aadhaar</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('mobile')"><span data-lucide='phone' class='w-4 h-4'></span><span class="hidden sm:inline">Mobile</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('gst')"><span data-lucide='building-2' class='w-4 h-4'></span><span class="hidden sm:inline">GSTIN</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('telegram')"><span data-lucide='send' class='w-4 h-4'></span><span class="hidden sm:inline">Telegram</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('ifsc')"><span data-lucide='banknote' class='w-4 h-4'></span><span class="hidden sm:inline">IFSC</span></button>
-            <button class="tab-button flex-1 min-w-max flex items-center justify-center space-x-1 p-3 text-sm font-medium text-gray-600 hover:bg-gray-50" onclick="showTab('vehicle')"><span data-lucide='truck' class='w-4 h-4'></span><span class="hidden sm:inline">Vehicle</span></button>
-        </nav>
-    </div>
-    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-100">
-        <!-- Tab panes go here (aadhaar, mobile, gst, etc.) same as your original code -->
-    </div>
-</div>
-</div>
-
-<script>
-// Login logic
-document.getElementById('login-form').addEventListener('submit', function(e){
-    e.preventDefault();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const error = document.getElementById('login-error');
-    // Static demo login: username=admin, password=1234
-    if(username === 'admin' && password === '1234'){
-        document.getElementById('login-container').style.display = 'none';
-        document.getElementById('dashboard').classList.remove('hidden');
-        showTab('aadhaar');
-        lucide.createIcons();
-    } else {
-        error.textContent = 'Invalid username or password.';
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSINT Intelligence Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
     }
-});
+    .card {
+      background: #1e293b;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: transform .2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    input {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      width: 100%;
+      color: #f8fafc;
+    }
+    input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 2px rgba(99,102,241,0.5);
+    }
+    button {
+      background: #6366f1;
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #4f46e5;
+    }
+    pre {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      overflow-x: auto;
+      max-height: 250px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-6">
 
-// Dashboard functions (from your original code)
-const API_MAP = {
-  aadhaar: { url: 'https://test.sahilraz9265.workers.dev/ahhdhar?id=', inputId: 'aadhaar-input', resultId: 'aadhaar-result', minLength: 12, maxLength: 12, errorMsg: 'Aadhaar must be 12 digits.' },
-  mobile: { url: 'https://gauravapi.gauravyt492.workers.dev/?mobile=', inputId: 'mobile-input', resultId: 'mobile-result', minLength: 10, maxLength: 10, errorMsg: 'Mobile must be 10 digits.' },
-  gst: { url: 'https://gaurav-osint-panel.gauravyt492.workers.dev/?gstNumber=', inputId: 'gst-input', resultId: 'gst-result', minLength: 15, maxLength: 15, errorMsg: 'GSTIN must be 15 characters.' },
-  telegram: { url: 'https://gaurav-osint-panel.gauravyt492.workers.dev/?user=', inputId: 'telegram-input', resultId: 'telegram-result', minLength: 1, maxLength: 50, errorMsg: 'Invalid Telegram username.' },
-  ifsc: { url: 'https://encore.sahilraz9265.workers.dev/ifsc-lookup?ifsc=', inputId: 'ifsc-input', resultId: 'ifsc-result', minLength: 11, maxLength: 11, errorMsg: 'IFSC must be 11 characters.' },
-  vehicle: { url: 'https://gaurav-vehicle-api.gauravyt492.workers.dev/?rc=', inputId: 'vehicle-input', resultId: 'vehicle-result', minLength: 4, maxLength: 15, errorMsg: 'Invalid RC format.' },
-};
+  <h1 class="text-3xl font-bold text-indigo-400 mb-6 flex items-center gap-2">
+    <i data-lucide="shield"></i> OSINT Intelligence Dashboard
+  </h1>
 
-function showTab(tabId){
- document.querySelectorAll('.tab-pane').forEach(p=>p.classList.add('hidden'));
- document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
- const pane = document.getElementById(tabId);
- if(pane) pane.classList.remove('hidden');
- const btn=document.querySelector(`.tab-button[onclick*="${tabId}"]`);
- if(btn) btn.classList.add('active'); 
- lucide.createIcons();
-}
+  <div class="grid md:grid-cols-2 gap-6 w-full max-w-5xl">
 
-window.onload = () => { lucide.createIcons(); };
-</script>
+    <!-- Aadhaar Lookup -->
+    <div class="card">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="id-card"></i> Aadhaar Lookup
+      </h2>
+      <input type="text" id="aadhar" placeholder="Enter Aadhaar Number">
+      <button onclick="fetchData('aadhar')">Search</button>
+      <pre id="aadharResult">Result will appear here...</pre>
+    </div>
+
+    <!-- Mobile Lookup -->
+    <div class="card">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="smartphone"></i> Mobile Lookup
+      </h2>
+      <input type="text" id="mobile" placeholder="Enter Mobile Number">
+      <button onclick="fetchData('mobile')">Search</button>
+      <pre id="mobileResult">Result will appear here...</pre>
+    </div>
+
+    <!-- GST Lookup -->
+    <div class="card">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="building"></i> GST Lookup
+      </h2>
+      <input type="text" id="gst" placeholder="Enter GST Number">
+      <button onclick="fetchData('gst')">Search</button>
+      <pre id="gstResult">Result will appear here...</pre>
+    </div>
+
+    <!-- Telegram Info -->
+    <div class="card">
+      <h2 class="text-xl font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="send"></i> Telegram Info
+      </h2>
+      <input type="text" id="tg" placeholder="Enter Telegram Username">
+      <button onclick="fetchData('tg')">Search</button>
+      <pre id="tgResult">Result will appear here...</pre>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    async function fetchData(type) {
+      let query, url, resultId;
+
+      if (type === "aadhar") {
+        query = document.getElementById("aadhar").value;
+        url = `https://aadhar.gauravyt492.workers.dev/?aadhar=${query}`;
+        resultId = "aadharResult";
+      } 
+      else if (type === "mobile") {
+        query = document.getElementById("mobile").value;
+        url = `https://gauravapi.gauravyt492.workers.dev/?mobile=${query}`;
+        resultId = "mobileResult";
+      } 
+      else if (type === "gst") {
+        query = document.getElementById("gst").value;
+        url = `https://gstlookup.hideme.eu.org/?gstNumber=${query}`;
+        resultId = "gstResult";
+      } 
+      else if (type === "tg") {
+        query = document.getElementById("tg").value;
+        url = `https://tg-info-neon.vercel.app/user-details?user=${query}`;
+        resultId = "tgResult";
+      }
+
+      document.getElementById(resultId).innerText = "Fetching data...";
+
+      try {
+        let res = await fetch(url);
+        let text = await res.text();
+        document.getElementById(resultId).innerText = text;
+      } catch (err) {
+        document.getElementById(resultId).innerText = "Error: " + err.message;
+      }
+    }
+  </script>
 
 </body>
-    </html>
+</html>
