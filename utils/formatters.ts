@@ -3,8 +3,6 @@ import { ApiData, LookupKey } from '../types';
 // ======================
 // 🔹 Helper Functions
 // ======================
-
-// Convert camelCase to Title Case with acronym handling
 const camelCaseToTitleCase = (str: string): string => {
     if (str.toUpperCase() === 'RCID') return 'RC ID';
     if (str.toUpperCase() === 'UID') return 'UID Linked';
@@ -12,10 +10,8 @@ const camelCaseToTitleCase = (str: string): string => {
     return result.charAt(0).toUpperCase() + result.slice(1);
 };
 
-// Create divider lines
 const createDivider = (char: string, length: number): string => char.repeat(length);
 
-// Timestamp for footer
 const getTimestamp = (): string => {
     return new Date().toLocaleString('en-GB', {
         day: '2-digit',
@@ -195,7 +191,7 @@ const formatUpiReport = (data: any, query: string): string => {
 };
 
 // ======================
-// 🔹 Generic Formatter (fallback)
+// 🔹 Generic Formatter
 // ======================
 const formatGenericReport = (data: ApiData, type: LookupKey, query: string): string => {
     const reportTitle = `${type.toUpperCase()} ANALYSIS REPORT`;
@@ -228,7 +224,7 @@ const formatGenericReport = (data: ApiData, type: LookupKey, query: string): str
 };
 
 // ======================
-// 🔹 API Payload Extractor
+// 🔹 Extractor + Main Export
 // ======================
 const extractApiPayload = (data: ApiData): any => {
     if (!data || typeof data !== 'object' || Array.isArray(data)) return data;
@@ -241,69 +237,18 @@ const extractApiPayload = (data: ApiData): any => {
     return data;
 };
 
-// ======================
-// 🔹 Main Export
-// ======================
 export const formatApiData = (data: ApiData, type: LookupKey, query: string): string => {
     if (!data || (typeof data === 'object' && Object.keys(data).length === 0)) {
         return 'No details found.';
     }
 
-    // Specific formatters
     if (type === 'family') return formatFamilyInfoReport(data, query);
     if (type === 'fampay') return formatFampayReport(data, query);
     if (type === 'paknum') return formatPakistanNumReport(data, query);
     if (type === 'vehicle') return formatVehicleReport(data, query);
     if (type === 'upi') return formatUpiReport(data, query);
 
-    // Fallback generic
     const payload = extractApiPayload(data);
-    if (!payload || (typeof payload === 'object' && Object.keys(payload).length === 0)) {
-        return 'No details found in API response payload.';
-    }
-    return formatGenericReport(payload, type, query);
-};            if (value === null || value === undefined || value === '') continue;
-            const formattedKey = camelCaseToTitleCase(key);
-            report += `${formattedKey.padEnd(maxKeyLength + 2)}: ${value}\n`;
-        }
-        report += '\n';
-    });
-
-
-    report += `${createDivider('-', 42)}\n`;
-    report += `Report generated: ${getTimestamp()}\n`;
-    report += `Data Source: ${dataSource}\n`;
-    report += `${createDivider('-', 42)}\n\n`;
-
-    return report;
-};
-
-const extractApiPayload = (data: ApiData): any => {
-    if (!data || typeof data !== 'object' || Array.isArray(data)) {
-        return data; // Return as-is if not a non-array object
-    }
-    // Check for common wrapper keys
-    if ('data' in data) return data.data;
-    if ('result' in data) return data.result;
-    if ('response' in data) return data.response;
-    if ('details' in data) return data.details;
-    if ('Data' in data && data.Success === true) return data.Data;
-    if ('aadhaar' in data) return data.aadhaar;
-
-    return data; // Fallback to the original object
-};
-
-export const formatApiData = (data: ApiData, type: LookupKey, query: string): string => {
-    if (!data || (typeof data === 'object' && Object.keys(data).length === 0)) {
-        return 'No details found.';
-    }
-    
-    if (type === 'family' && typeof data === 'object' && !Array.isArray(data) && (data.memberDetailsList || data.members)) {
-         return formatFamilyInfoReport(data, query);
-    }
-    
-    const payload = extractApiPayload(data);
-
     if (!payload || (typeof payload === 'object' && Object.keys(payload).length === 0)) {
         return 'No details found in API response payload.';
     }
