@@ -11,7 +11,6 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputType: 'number',
     info: 'Mobile: 10-digit number'
   },
-
   aadhaar: { 
     label: 'Aadhaar Lookup',
     placeholder: 'Enter 12-digit number...',
@@ -22,7 +21,6 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputType: 'number',
     info: 'Aadhaar: 12-digit number'
   },
-
   family: {
     label: 'Family Info Lookup',
     placeholder: 'Enter Aadhaar to find family info...',
@@ -33,7 +31,6 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputType: 'number',
     info: 'Family (by Aadhaar): 12-digit number'
   },
-
   gst: { 
     label: 'GSTIN Lookup',
     placeholder: 'Enter 15-char GSTIN...',
@@ -44,7 +41,6 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputTransform: (v) => v.toUpperCase(),
     info: 'GST: 15-char alphanumeric'
   },
-
   telegram: { 
     label: 'Telegram Lookup',
     placeholder: 'Enter Telegram User ID...',
@@ -54,7 +50,6 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     errorMsg: 'Invalid Telegram User ID.',
     info: 'Telegram: User/ID'
   },
-
   ifsc: { 
     label: 'IFSC Lookup',
     placeholder: 'Enter 11-char IFSC Code...',
@@ -65,7 +60,6 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputTransform: (v) => v.toUpperCase(),
     info: 'IFSC: 11-char alphanumeric'
   },
-
   vehicle: { 
     label: 'Vehicle RC Lookup',
     placeholder: 'Enter Vehicle RC Number...',
@@ -75,36 +69,5 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     errorMsg: 'Invalid Vehicle RC format.',
     inputTransform: (v) => v.toUpperCase(),
     info: 'Vehicle RC: 10-15 char alphanumeric'
-  },
-
-  fampay: {
-    label: 'Fampay User Lookup',
-    placeholder: 'Enter Fampay Username or Number...',
-    url: 'https://fampay-api.gauravyt492.workers.dev/?query=',
-    minLength: 4,
-    maxLength: 30,
-    errorMsg: 'Enter a valid username or number.',
-    info: 'Fampay User / Number'
-  },
-
-  paknum: {
-    label: 'Pakistan Number Lookup',
-    placeholder: 'Enter Pakistani phone number...',
-    url: 'https://paknum-api.gauravyt492.workers.dev/?number=',
-    minLength: 10,
-    maxLength: 13,
-    errorMsg: 'Invalid Pakistani number.',
-    inputType: 'number',
-    info: 'Pakistan: 10-13 digit number'
-  },
-
-  upi: {
-    label: 'UPI Verification',
-    placeholder: 'Enter UPI ID (example@upi)...',
-    url: 'https://upi-api.gauravyt492.workers.dev/?upi=',
-    minLength: 5,
-    maxLength: 60,
-    errorMsg: 'Enter valid UPI ID.',
-    info: 'UPI: e.g. name@bank'
   },
 };
