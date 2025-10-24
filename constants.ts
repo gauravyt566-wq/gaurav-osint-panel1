@@ -11,6 +11,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputType: 'number',
     info: 'Mobile: 10-digit number'
   },
+
   aadhaar: { 
     label: 'Aadhaar Lookup',
     placeholder: 'Enter 12-digit number...',
@@ -21,6 +22,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputType: 'number',
     info: 'Aadhaar: 12-digit number'
   },
+
   family: {
     label: 'Family Info Lookup',
     placeholder: 'Enter Aadhaar to find family info...',
@@ -31,6 +33,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputType: 'number',
     info: 'Family (by Aadhaar): 12-digit number'
   },
+
   gst: { 
     label: 'GSTIN Lookup',
     placeholder: 'Enter 15-char GSTIN...',
@@ -41,6 +44,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputTransform: (v) => v.toUpperCase(),
     info: 'GST: 15-char alphanumeric'
   },
+
   telegram: { 
     label: 'Telegram Lookup',
     placeholder: 'Enter Telegram User ID...',
@@ -50,6 +54,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     errorMsg: 'Invalid Telegram User ID.',
     info: 'Telegram: User/ID'
   },
+
   ifsc: { 
     label: 'IFSC Lookup',
     placeholder: 'Enter 11-char IFSC Code...',
@@ -60,6 +65,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     inputTransform: (v) => v.toUpperCase(),
     info: 'IFSC: 11-char alphanumeric'
   },
+
   vehicle: { 
     label: 'Vehicle RC Lookup',
     placeholder: 'Enter Vehicle RC Number...',
@@ -69,5 +75,39 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     errorMsg: 'Invalid Vehicle RC format.',
     inputTransform: (v) => v.toUpperCase(),
     info: 'Vehicle RC: 10-15 char alphanumeric'
+  },
+
+  // 🟩 New Additions
+  fampay: {
+    label: 'Fampay Lookup',
+    placeholder: 'Enter username or phone number...',
+    url: 'https://fampay-api.gauravyt492.workers.dev/?query=',
+    minLength: 3,
+    maxLength: 50,
+    errorMsg: 'Invalid Fampay username or number.',
+    inputType: 'text',
+    info: 'Fampay: username or mobile number'
+  },
+
+  paknum: {
+    label: 'Pakistan Number Lookup',
+    placeholder: 'Enter Pakistani mobile number...',
+    url: 'https://ahmadmodstools.online/apis/db.php?num=92',
+    minLength: 10,
+    maxLength: 13,
+    errorMsg: 'Invalid Pakistani number format.',
+    inputType: 'number',
+    info: 'Pakistan Number: 10–13 digits'
+  },
+
+  upi: {
+    label: 'UPI ID Lookup',
+    placeholder: 'Enter UPI ID (e.g. name@bank)...',
+    url: 'https://upi-verify.gauravyt492.workers.dev/?vpa=',
+    minLength: 5,
+    maxLength: 50,
+    errorMsg: 'Invalid UPI ID format.',
+    inputType: 'text',
+    info: 'UPI: e.g. gaurav@oksbi'
   },
 };
