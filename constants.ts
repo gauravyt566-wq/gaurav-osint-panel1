@@ -77,37 +77,34 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
     info: 'Vehicle RC: 10-15 char alphanumeric'
   },
 
-  // 🟩 New Additions
   fampay: {
-    label: 'Fampay Lookup',
-    placeholder: 'Enter username or phone number...',
+    label: 'Fampay User Lookup',
+    placeholder: 'Enter Fampay Username or Number...',
     url: 'https://fampay-api.gauravyt492.workers.dev/?query=',
-    minLength: 3,
-    maxLength: 50,
-    errorMsg: 'Invalid Fampay username or number.',
-    inputType: 'text',
-    info: 'Fampay: username or mobile number'
+    minLength: 4,
+    maxLength: 30,
+    errorMsg: 'Enter a valid username or number.',
+    info: 'Fampay User / Number'
   },
 
   paknum: {
     label: 'Pakistan Number Lookup',
-    placeholder: 'Enter Pakistani mobile number...',
-    url: 'https://ahmadmodstools.online/apis/db.php?num=92',
+    placeholder: 'Enter Pakistani phone number...',
+    url: 'https://paknum-api.gauravyt492.workers.dev/?number=',
     minLength: 10,
     maxLength: 13,
-    errorMsg: 'Invalid Pakistani number format.',
+    errorMsg: 'Invalid Pakistani number.',
     inputType: 'number',
-    info: 'Pakistan Number: 10–13 digits'
+    info: 'Pakistan: 10-13 digit number'
   },
 
   upi: {
-    label: 'UPI ID Lookup',
-    placeholder: 'Enter UPI ID (e.g. name@bank)...',
-    url: 'https://upi-verify.gauravyt492.workers.dev/?vpa=',
+    label: 'UPI Verification',
+    placeholder: 'Enter UPI ID (example@upi)...',
+    url: 'https://upi-api.gauravyt492.workers.dev/?upi=',
     minLength: 5,
-    maxLength: 50,
-    errorMsg: 'Invalid UPI ID format.',
-    inputType: 'text',
-    info: 'UPI: e.g. gaurav@oksbi'
+    maxLength: 60,
+    errorMsg: 'Enter valid UPI ID.',
+    info: 'UPI: e.g. name@bank'
   },
 };
