@@ -14,7 +14,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   aadhaar: { 
     label: 'Aadhaar Lookup',
     placeholder: 'Enter 12-digit number...',
-    url: 'https://test.sahilraz9265.workers.dev/ahhdhar?id=',
+    url: 'https://aadhar.gauravyt492.workers.dev/?aadhar=',
     minLength: 12,
     maxLength: 12,
     errorMsg: 'Aadhaar must be 12 digits.',
@@ -63,7 +63,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   vehicle: { 
     label: 'Vehicle RC Lookup',
     placeholder: 'Enter Vehicle RC Number...',
-    url: 'https://vehicle.taitaninfo.workers.dev/?rc_number=',
+    url: 'https://vehicleinfo-v2.zerovault.workers.dev/?vehicle_number=',
     minLength: 4,
     maxLength: 15,
     errorMsg: 'Invalid Vehicle RC format.',
