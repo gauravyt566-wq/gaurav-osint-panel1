@@ -4,7 +4,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   mobile: { 
     label: 'Mobile Number Lookup',
     placeholder: 'Enter 10-digit number...',
-    url: 'https://gauravapi.gauravyt492.workers.dev/?mobile=',
+    url: 'https://number-info.gauravyt342.workers.dev/?mobile=',
     minLength: 10,
     maxLength: 10,
     errorMsg: 'Mobile must be 10 digits.',
@@ -44,7 +44,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   telegram: { 
     label: 'Telegram Lookup',
     placeholder: 'Enter Telegram User ID...',
-    url: 'https://gaurav-osint-panel.gauravyt492.workers.dev/?user=',
+    url: 'https://tg-info-neon.vercel.app/user-details?user=',
     minLength: 1,
     maxLength: 50,
     errorMsg: 'Invalid Telegram User ID.',
