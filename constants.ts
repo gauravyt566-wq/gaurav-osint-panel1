@@ -14,7 +14,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   aadhaar: { 
     label: 'Aadhaar Lookup',
     placeholder: 'Enter 12-digit number...',
-    url: 'https://aadhar.gauravyt492.workers.dev/?aadhar=',
+    url: 'https://aadhar.gauravyt342.workers.dev/?aadhar=',
     minLength: 12,
     maxLength: 12,
     errorMsg: 'Aadhaar must be 12 digits.',
@@ -24,7 +24,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   family: {
     label: 'Family Info Lookup',
     placeholder: 'Enter Aadhaar to find family info...',
-    url: 'https://family-info.gauravyt492.workers.dev/?aadhar=',
+    url: 'https://family-info.gauravyt342.workers.dev/?aadhar=',
     minLength: 12,
     maxLength: 12,
     errorMsg: 'Aadhaar must be 12 digits.',
@@ -34,7 +34,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   gst: { 
     label: 'GSTIN Lookup',
     placeholder: 'Enter 15-char GSTIN...',
-    url: 'https://gst.gauravyt492.workers.dev/?gst=',
+    url: 'https://gst.gauravyt342.workers.dev/?gst=',
     minLength: 15,
     maxLength: 15,
     errorMsg: 'GSTIN must be 15 characters.',
@@ -53,7 +53,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   ifsc: { 
     label: 'IFSC Lookup',
     placeholder: 'Enter 11-char IFSC Code...',
-    url: 'https://ifsc-info.gauravyt492.workers.dev/?ifsc=',
+    url: 'https://ifsc.gauravyt342.workers.dev/?ifsc=',
     minLength: 11,
     maxLength: 11,
     errorMsg: 'IFSC must be 11 characters.',
