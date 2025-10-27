@@ -44,7 +44,7 @@ export const LOOKUP_CONFIG: Record<LookupKey, TabConfig> = {
   telegram: { 
     label: 'Telegram Lookup',
     placeholder: 'Enter Telegram User ID...',
-    url: 'https://tg-info-neon.vercel.app/user-details?user=',
+    url: 'https://telegram.gauravyt342.workers.dev/?user=',
     minLength: 1,
     maxLength: 50,
     errorMsg: 'Invalid Telegram User ID.',
